@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UI\Background.png" />
+    <None Remove="UI\Block-Empty.png" />
+    <None Remove="UI\Block-I.png" />
+    <None Remove="UI\Block-J.png" />
+    <None Remove="UI\Block-L.png" />
+    <None Remove="UI\Block-O.png" />
+    <None Remove="UI\Block-S.png" />
+    <None Remove="UI\Block-T.png" />
+    <None Remove="UI\Block-Z.png" />
+    <None Remove="UI\TileBlue.png" />
+    <None Remove="UI\TileCyan.png" />
+    <None Remove="UI\TileEmpty.png" />
+    <None Remove="UI\TileGreen.png" />
+    <None Remove="UI\TileOrange.png" />
+    <None Remove="UI\TilePurple.png" />
+    <None Remove="UI\TileRed.png" />
+    <None Remove="UI\TileYellow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Background.png" />
+    <EmbeddedResource Include="UI\Block-Empty.png" />
+    <EmbeddedResource Include="UI\Block-I.png" />
+    <EmbeddedResource Include="UI\Block-J.png" />
+    <EmbeddedResource Include="UI\Block-L.png" />
+    <EmbeddedResource Include="UI\Block-O.png" />
+    <EmbeddedResource Include="UI\Block-S.png" />
+    <EmbeddedResource Include="UI\Block-T.png" />
+    <EmbeddedResource Include="UI\Block-Z.png" />
+    <EmbeddedResource Include="UI\TileBlue.png" />
+    <EmbeddedResource Include="UI\TileCyan.png" />
+    <EmbeddedResource Include="UI\TileEmpty.png" />
+    <EmbeddedResource Include="UI\TileGreen.png" />
+    <EmbeddedResource Include="UI\TileOrange.png" />
+    <EmbeddedResource Include="UI\TilePurple.png" />
+    <EmbeddedResource Include="UI\TileRed.png" />
+    <EmbeddedResource Include="UI\TileYellow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0" />
+  </ItemGroup>
+
+</Project>
