@@ -10,8 +10,8 @@ namespace Tetris
     public class GameGrid
     {
         private readonly int[,] grid;  //建立一個二維陣列，一維是行二維是列
-        private int Rows { get; } //行(橫的)
-        private int Columns { get; } //列(直的)
+        public int Rows { get; } //行(橫的)
+        public int Columns { get; } //列(直的)
         public int this[int r, int c]   //建立索引器，能輕鬆訪問行列數組
         {
             get => grid[r, c];

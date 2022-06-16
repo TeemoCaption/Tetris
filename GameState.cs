@@ -8,7 +8,7 @@ namespace Tetris
 {
     public class GameState
     {
-        private Block currentBlock;
+        private Block? currentBlock { get; set; }
 
         public Block CurrentBlock
         {
@@ -18,16 +18,25 @@ namespace Tetris
                 currentBlock = value;
                 //當更新目前方塊時，調用重置方塊方法來設置正確的開始位置和旋轉狀態
                 currentBlock.Reset();
+
+                for (int i = 0; i < 2; i++)   //讓方塊在一開始的時候就在可見行(也就是第一行)
+                {
+                    currentBlock.Move(1, 0);
+                    if (!BlockFits())
+                    {
+                        currentBlock.Move(-1, 0);
+                    }
+                }
             }
-        }
+        } 
         public GameGrid GameGrid { get; }   //遊戲網格屬性
         public BlockQueue BlockQueue { get; }  //方塊列
         public bool GameOver { get; private set; }  //是否遊戲結束
-        
+
         public GameState()
         {
-            GameGrid = new GameGrid(22,10);   //初始化遊戲網格(22行10列的網格)
-            BlockQueue=new BlockQueue();   //初始化方塊列，用來獲取下一個產生的隨機方塊
+            GameGrid = new GameGrid(22, 10);   //初始化遊戲網格(22行10列的網格)
+            BlockQueue = new BlockQueue();   //初始化方塊列，用來獲取下一個產生的隨機方塊
             CurrentBlock = BlockQueue.GetAndUpdate();  //返回下一個方塊並再次更新下一個方塊的屬性
         }
 
@@ -35,7 +44,7 @@ namespace Tetris
         {
             foreach (Position p in CurrentBlock.TilePosition())  //循環遍歷當前方塊位置
             {
-                if (!GameGrid.IsEmpty(p.Row,p.Column)) //檢查是否超出「刪除網格」範圍或重疊另一個圖塊
+                if (!GameGrid.IsEmpty(p.Row, p.Column)) //檢查是否超出「刪除網格」範圍或重疊另一個圖塊
                 {
                     return false;
                 }
@@ -89,7 +98,7 @@ namespace Tetris
         {
             foreach (Position p in CurrentBlock.TilePosition())
             {
-                GameGrid[p.Row, p.Column]=CurrentBlock.Id;
+                GameGrid[p.Row, p.Column] = CurrentBlock.Id;
             }
             GameGrid.ClearFullRows();  //清除所有已滿的行
 

@@ -28,23 +28,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="UI\Background.png" />
-    <EmbeddedResource Include="UI\Block-Empty.png" />
-    <EmbeddedResource Include="UI\Block-I.png" />
-    <EmbeddedResource Include="UI\Block-J.png" />
-    <EmbeddedResource Include="UI\Block-L.png" />
-    <EmbeddedResource Include="UI\Block-O.png" />
-    <EmbeddedResource Include="UI\Block-S.png" />
-    <EmbeddedResource Include="UI\Block-T.png" />
-    <EmbeddedResource Include="UI\Block-Z.png" />
-    <EmbeddedResource Include="UI\TileBlue.png" />
-    <EmbeddedResource Include="UI\TileCyan.png" />
-    <EmbeddedResource Include="UI\TileEmpty.png" />
-    <EmbeddedResource Include="UI\TileGreen.png" />
-    <EmbeddedResource Include="UI\TileOrange.png" />
-    <EmbeddedResource Include="UI\TilePurple.png" />
-    <EmbeddedResource Include="UI\TileRed.png" />
-    <EmbeddedResource Include="UI\TileYellow.png" />
+    <Resource Include="UI\Background.png" />
+    <Resource Include="UI\Block-Empty.png" />
+    <Resource Include="UI\Block-I.png" />
+    <Resource Include="UI\Block-J.png" />
+    <Resource Include="UI\Block-L.png" />
+    <Resource Include="UI\Block-O.png" />
+    <Resource Include="UI\Block-S.png" />
+    <Resource Include="UI\Block-T.png" />
+    <Resource Include="UI\Block-Z.png" />
+    <Resource Include="UI\TileBlue.png" />
+    <Resource Include="UI\TileCyan.png" />
+    <Resource Include="UI\TileEmpty.png" />
+    <Resource Include="UI\TileGreen.png" />
+    <Resource Include="UI\TileOrange.png" />
+    <Resource Include="UI\TilePurple.png" />
+    <Resource Include="UI\TileRed.png" />
+    <Resource Include="UI\TileYellow.png" />
   </ItemGroup>
 
   <ItemGroup>

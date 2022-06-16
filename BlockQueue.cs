@@ -9,7 +9,7 @@ namespace Tetris
     public class BlockQueue
     {
         //負責在遊戲中選擇將包含的下一個方塊，共有七種方塊
-        private readonly BlockQueue[] blocks = new BlockQueue[]
+        private readonly Block[] blocks = new Block[]
         {
             new IBlock(),
             new JBlock(),
@@ -31,16 +31,16 @@ namespace Tetris
         {
             return blocks[random.Next(blocks.Length)];
         }
-    
+
         public Block GetAndUpdate()  //返回下一個方塊並再次更新下一個方塊的屬性
         {
-            Block block= NextBlock;
+            Block block = NextBlock;
             do
             {
-                NextBlock= RandomBlock();
-            }   
-            while (block.Id==NextBlock.Id);  //不斷隨機產生下一個方塊
-            
+                NextBlock = RandomBlock();
+            }
+            while (block.Id == NextBlock.Id);  //不斷隨機產生下一個方塊
+
             return block;
         }
     }
