@@ -19,7 +19,8 @@ namespace Tetris
                 //當更新目前方塊時，調用重置方塊方法來設置正確的開始位置和旋轉狀態
                 currentBlock.Reset();
 
-                for (int i = 0; i < 2; i++)   //讓方塊在一開始的時候就在可見行(也就是第一行)
+                //讓方塊在一開始的時候就在可見行(也就是第一行)
+                for (int i = 0; i < 2; i++)   
                 {
                     currentBlock.Move(1, 0);
                     if (!BlockFits())

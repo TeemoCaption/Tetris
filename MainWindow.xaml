@@ -40,7 +40,7 @@
         <StackPanel Grid.Row="1" Grid.Column="0"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
-            <TextBlock Text="目前方塊" TextAlignment="Center" FontFamily="微軟正黑體"/>
+            <TextBlock Text="保存的方塊" TextAlignment="Center" FontFamily="微軟正黑體"/>
             <Image x:Name="HoldImage" Margin="20" Width="125"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2"
