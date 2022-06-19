@@ -19,7 +19,8 @@ namespace Tetris
 
         public Block()
         {
-            offset = new Position(StartOffset.Row,StartOffset.Column);  //設定一開始的偏移量 
+            //設定一開始的偏移量
+            offset = new Position(StartOffset.Row,StartOffset.Column);   
         }
 
         //目前旋轉和偏移的方塊所占用的網格位置，IEnumerable是介面

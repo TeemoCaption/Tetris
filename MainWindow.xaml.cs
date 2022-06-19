@@ -20,7 +20,7 @@ namespace Tetris
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ImageSource[] tileImages = new ImageSource[]   //建立圖片數組
+        private readonly ImageSource[] tileImages = new ImageSource[]   //建立方塊像素數組
         {
             new BitmapImage(new Uri("UI/TileEmpty.png",UriKind.Relative)),
             new BitmapImage(new Uri("UI/TileCyan.png",UriKind.Relative)),
@@ -32,16 +32,16 @@ namespace Tetris
             new BitmapImage(new Uri("UI/TileRed.png",UriKind.Relative))
         };
 
-        private readonly ImageSource[] blockImages = new ImageSource[]   //建立圖片數組
+        private readonly ImageSource[] blockImages = new ImageSource[]   //建立方塊圖片數組
         {
-            new BitmapImage(new Uri("UI/TileEmpty.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileCyan.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileBlue.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileOrange.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileYellow.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileGreen.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TilePurple.png",UriKind.Relative)),
-            new BitmapImage(new Uri("UI/TileRed.png",UriKind.Relative))
+            new BitmapImage(new Uri("UI/Block-Empty.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-I.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-J.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-L.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-O.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-S.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-T.png",UriKind.Relative)),
+            new BitmapImage(new Uri("UI/Block-Z.png",UriKind.Relative))
         };
 
         public MainWindow()
@@ -52,6 +52,9 @@ namespace Tetris
 
         private GameState gameState = new GameState();
         private readonly Image[,] imageControls;
+        private  readonly int maxDelay =1000;
+        private readonly int minDelay =300;
+        private readonly int delayDecrease = 10;
 
         private Image[,] SetupGameCanvas(GameGrid grid)  //設置畫布網格圖片
         {
@@ -83,6 +86,7 @@ namespace Tetris
                 {
                     int id = grid[r, c];  //獲取方格起始id
                     imageControls[r, c].Source = tileImages[id];
+                    imageControls[r, c].Opacity = 1;
                 }
             }
         }
@@ -92,7 +96,19 @@ namespace Tetris
             foreach (Position p in block.TilePosition())
             {
                 imageControls[p.Row, p.Column].Source = tileImages[block.Id];
+                imageControls[p.Row, p.Column].Opacity = 1;
+            }
+        }
 
+        private void DrawHoldBlock(Block heldBlock)   //畫上保存的方塊圖片
+        {
+            if (heldBlock == null)
+            {
+                HoldImage.Source = blockImages[0];   //保存當前方塊
+            }
+            else
+            {
+                HoldImage.Source = blockImages[heldBlock.Id];   //替換方塊
             }
         }
 
@@ -101,6 +117,9 @@ namespace Tetris
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);   //畫下一個方塊
+            DrawHoldBlock(gameState.HeldBlock);
+            DrawGhostBlock(gameState.CurrentBlock);
+            ScoreText.Text = $"目前分數：{gameState.Score}";
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -126,6 +145,12 @@ namespace Tetris
                 case Key.Z:    //逆時鐘旋轉
                     gameState.RotateBlockCCW();
                     break;
+                case Key.C:
+                    gameState.HoldBlock();   //保存方塊
+                    break;
+                case Key.Space:
+                    gameState.DropBlock();  //快速掉落方塊
+                    break;
                 default:
                     return;
             }
@@ -135,13 +160,16 @@ namespace Tetris
         private async Task GameLoop()   //一直掉方塊
         {
             Draw(gameState);
+            
             while (!gameState.GameOver)
             {
-                await Task.Delay(500);   //建立在指定的毫秒數之後完成的工作
+                int delay = Math.Max(minDelay, maxDelay - (gameState.Score * delayDecrease));
+                await Task.Delay(delay);   //建立在指定的毫秒數之後完成的工作
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }
             GameOverMenu.Visibility = Visibility.Visible;
+            FinalScoreText.Text= $"最終你的分數是：{gameState.Score}";
         }
 
         private void DrawNextBlock(BlockQueue blockQueue)   //預覽下一個方塊
@@ -162,9 +190,15 @@ namespace Tetris
             await GameLoop();
         }
 
-        private void Window_KeyDown_1(object sender, KeyEventArgs e)
+        private void DrawGhostBlock(Block block)  //畫幽靈方塊
         {
-
+            int dropDistance = gameState.BlockDropDistance();
+            //通過下降距離添加到當前方塊位置來找到方塊將要降落的方格
+            foreach (Position p in block.TilePosition())  
+            {
+                imageControls[p.Row+dropDistance,p.Column].Opacity=0.25;   //設置不透明度
+                imageControls[p.Row + dropDistance, p.Column].Source = tileImages[block.Id];
+            }
         }
     }
 }

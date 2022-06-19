@@ -28,10 +28,15 @@ namespace Tetris
                     }
                 }
             }
-        } 
+        }
         public GameGrid GameGrid { get; }   //遊戲網格屬性
         public BlockQueue BlockQueue { get; }  //方塊列
         public bool GameOver { get; private set; }  //是否遊戲結束
+
+        public int Score { get; private set; } //分數
+
+        public Block? HeldBlock { get; private set; }   //保存方塊
+        public bool CanHold { get; private set; }  //是否能保存方塊
 
         public GameState()
         {
@@ -51,6 +56,29 @@ namespace Tetris
             }
             return true;
         }
+
+        public void HoldBlock()  //保存方塊
+        {
+            if (!CanHold)   //如果不能保存
+            {
+                return;
+            }
+            else
+            {
+                if (HeldBlock == null)   //如果還沒有保存任何方塊
+                {
+                    HeldBlock = CurrentBlock; 
+                    currentBlock = BlockQueue.GetAndUpdate();   //目前方塊更新
+                }
+                else    //如果已經有保存的方塊，則互相交換
+                {
+                    Block tmp = CurrentBlock;
+                    CurrentBlock= HeldBlock;
+                    HeldBlock = tmp;
+                }
+                CanHold = false;
+            }
+        } 
 
         public void RotateBlockCW()  //順時針旋轉當前方塊
         {
@@ -100,7 +128,7 @@ namespace Tetris
             {
                 GameGrid[p.Row, p.Column] = CurrentBlock.Id;
             }
-            GameGrid.ClearFullRows();  //清除所有已滿的行
+            Score += 10*GameGrid.ClearFullRows();  //清除所有已滿的行並加分
 
             if (IsGameOver())  //檢查是否遊戲結束
             {
@@ -109,6 +137,7 @@ namespace Tetris
             else
             {
                 CurrentBlock = BlockQueue.GetAndUpdate();  //更新當前方塊
+                CanHold = true;  //讓方塊能被替換
             }
         }
 
@@ -120,6 +149,33 @@ namespace Tetris
                 CurrentBlock.Move(-1, 0);  //如果移動到非法位置，則向上倒退移動
                 PlaceBlock();   //調用此方法，以避免方塊無法向下移動
             }
+        }
+
+        //統計當快速向下掉落方塊時能下降多少行
+        public int TileDropDistance(Position p)   
+        {
+            int drop=0; 
+            while (GameGrid.IsEmpty(p.Row +drop+ 1, p.Column))
+            {
+                drop++;
+            }
+            return drop;    //返回方塊可以向下移動多少行
+        }
+
+        public int BlockDropDistance()
+        {
+            int drop = GameGrid.Rows;
+            foreach (Position p in CurrentBlock.TilePosition())
+            {
+                drop=System.Math.Min(drop,TileDropDistance(p));
+            }
+            return drop;
+        }
+
+        public void DropBlock()  //快速向下
+        {
+            CurrentBlock.Move(BlockDropDistance(),0);
+            PlaceBlock();
         }
     }
 }
